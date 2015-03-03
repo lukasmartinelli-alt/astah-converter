@@ -24,8 +24,22 @@ module.exports = function(app, projectDir, exportDir) {
                                         hash + '.' + projectFile.extension);
             fs.renameSync(projectFile.path, projectPath);
             astah.exportImage(projectPath, exportDir, 'png').then(function() {
-                res.send(hash);
+                res.status(201);
+                res.location('/projects/' + hash);
+                res.send({
+                    url: '/projects/' + hash,
+                    exports: fs.readdirSync(path.join(exportDir, hash)).map(function(filename) {
+                        return {
+                            url: '/projects/' + hash + '?file=' + filename,
+                            filename: filename
+                        };
+                    })
+                });
             });
         });
+    });
+
+    app.get('/projects/:sha', function(req, res) {
+        return res.sendFile(path.join(exportDir, req.params.sha, req.query.file));
     });
 };
