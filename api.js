@@ -15,6 +15,19 @@ function hashFile(filePath, cb) {
 };
 
 module.exports = function(app, astah, projectDir, exportDir) {
+    function findFiles(hash) {
+        return fs.readdirSync(path.join(exportDir, hash))
+            .filter(function(filename) {
+                return path.extname(filename) !== '.bak';
+            })
+            .map(function(filename) {
+                return {
+                    url: '/projects/' + hash + '?file=' + filename,
+                    filename: filename
+                };
+        });
+    }
+
     app.post('/projects', function(req, res) {
         var projectFile = req.files.project;
         hashFile(projectFile.path, function(hash) {
@@ -26,16 +39,7 @@ module.exports = function(app, astah, projectDir, exportDir) {
                 res.location('/projects/' + hash);
                 res.send({
                     url: '/projects/' + hash,
-                    exports: fs.readdirSync(path.join(exportDir, hash))
-                        .filter(function(filename) {
-                            return path.extname(filename) !== '.bak';
-                        })
-                        .map(function(filename) {
-                            return {
-                                url: '/projects/' + hash + '?file=' + filename,
-                                filename: filename
-                            };
-                    })
+                    exports: findFiles(hash)
                 });
             }, function(err) {
                 res.status(500);
@@ -45,12 +49,20 @@ module.exports = function(app, astah, projectDir, exportDir) {
     });
 
     app.get('/projects/:sha', function(req, res) {
-        var exportPath = path.join(exportDir, req.params.sha, req.query.file);
-        if(fs.existsSync(exportPath)) {
-            return res.sendFile(exportPath);
+        if(req.query.file) {
+            var exportPath = path.join(exportDir, req.params.sha, req.query.file);
+            if(fs.existsSync(exportPath)) {
+                return res.sendFile(exportPath);
+            } else {
+                res.status(404),
+                res.send('Could not find file ' + req.query.file);
+            }
         } else {
-            res.status(404),
-            res.send('Could not find file ' + req.query.file);
+            res.status(200);
+            res.send({
+                url: '/projects/' + req.params.sha,
+                exports: findFiles(req.params.sha)
+            });
         }
     });
 };
