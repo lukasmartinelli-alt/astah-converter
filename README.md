@@ -1,6 +1,10 @@
-## astah
+## Astah to PNG converter
 
-A simple API that can export diagrams as images from an Astah [http://astah.net/] project file.
+A simple web interface and API that can export diagrams as images from an Astah [http://astah.net/] project file.
+
+## Web
+
+![AStah to PNG converter web interface](screenshot.png)
 
 ## API
 
