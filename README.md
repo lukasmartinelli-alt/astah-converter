@@ -16,7 +16,7 @@ There is a single ressource `project` for an Astah project file.
 Make a POST request to the `projects` endpoint with a file upload named `upload`.
 
 ```bash
-curl -F "upload=@UseCaseDiagram.astah" http://localhost/projects
+curl -H "Accept:application/json" -F "upload=@UseCaseDiagram.astah" http://localhost/projects
 ```
 
 ```json
@@ -37,6 +37,16 @@ Make a GET request to the exported file.
 
 ```bash
 curl -O http://localhost/projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png"
+```
+
+### Upload project and download all exports
+
+If you request `text/plain` from the API you can download the exports
+[line by line](http://serverfault.com/questions/155832/how-can-i-download-multiple-files-stored-in-a-text-file-with-curl-and-xargs).
+
+```bash
+curl -H "Accept:text/plain" -F "upload=@UseCaseDiagram.astah" http://localhost/projects | xargs -n1 curl -O
+
 ```
 
 ## Deployment

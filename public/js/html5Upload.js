@@ -182,6 +182,9 @@ define(function () {
                 upload.events.onProgress(event.total, event.loaded);
             };
 
+            //Request json
+            xhr.setRequestHeader('Accept', 'application/json');
+
             // Triggered when upload is completed:
             xhr.onload = function (event) {
                 console.log('Upload completed: ' + fileName);

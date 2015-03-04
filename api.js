@@ -42,13 +42,25 @@ module.exports = function(app, astah, projectDir, exportDir) {
             var projectPath = path.join(projectDir,
                                         hash + '.' + projectFile.extension);
             var projectUrl = absUrl('/projects/' + hash);
+
             fs.renameSync(projectFile.path, projectPath);
+
             astah.exportImage(projectPath, exportDir, 'png').then(function() {
                 res.status(201);
                 res.location(projectUrl);
-                res.send({
-                    project_url: projectUrl,
-                    exports: findFiles(hash, absUrl)
+                var exports = findFiles(hash, absUrl);
+                return res.format({
+                    text: function() {
+                        res.send(exports.map(function(exportedFile) {
+                            return exportedFile.export_url;
+                        }).join("\n"));
+                    },
+                    json: function() {
+                        res.json({
+                            project_url: projectUrl,
+                            exports: exports
+                        });
+                    }
                 });
             }, function(err) {
                 res.status(500);
@@ -70,10 +82,19 @@ module.exports = function(app, astah, projectDir, exportDir) {
             }
         } else {
             var projectUrl = absUrl('/projects/' + req.params.sha);
+            var exports = findFiles(req.params.sha, absUrl);
+
             res.status(200);
-            res.send({
-                project_url: projectUrl,
-                exports: findFiles(req.params.sha, absUrl)
+            return res.format({
+                text: function() {
+                    res.send(exports.join("\n"));
+                },
+                json: function() {
+                    res.json({
+                        project_url: projectUrl,
+                        exports: exports
+                    });
+                }
             });
         }
     });
