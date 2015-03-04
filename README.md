@@ -17,9 +17,10 @@ curl -F "upload=@UseCaseDiagram.astah" http://localhost:3000/projects
 ```
 {
     "url": "projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d",
-    "files:" [
+    "exports:" [
         {
-            "url": "projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png"
+            "url": "projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png",
+            "filename": "UseCase Diagram.png"
         }
     ]
 }

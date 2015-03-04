@@ -17,7 +17,6 @@ function hashFile(filePath, cb) {
 
 module.exports = function(app, projectDir, exportDir) {
     app.post('/projects', function(req, res) {
-        console.log(req.files);
         var projectFile = req.files.project;
         hashFile(projectFile.path, function(hash) {
             var projectPath = path.join(projectDir,
@@ -28,18 +27,31 @@ module.exports = function(app, projectDir, exportDir) {
                 res.location('/projects/' + hash);
                 res.send({
                     url: '/projects/' + hash,
-                    exports: fs.readdirSync(path.join(exportDir, hash)).map(function(filename) {
-                        return {
-                            url: '/projects/' + hash + '?file=' + filename,
-                            filename: filename
-                        };
+                    exports: fs.readdirSync(path.join(exportDir, hash))
+                        .filter(function(filename) {
+                            return path.extname(filename) !== '.bak'; 
+                        })
+                        .map(function(filename) {
+                            return {
+                                url: '/projects/' + hash + '?file=' + filename,
+                                filename: filename
+                            };
                     })
                 });
+            }, function(err) {
+                res.status(500);
+                res.send(err);
             });
         });
     });
 
     app.get('/projects/:sha', function(req, res) {
-        return res.sendFile(path.join(exportDir, req.params.sha, req.query.file));
+        var exportPath = path.join(exportDir, req.params.sha, req.query.file);
+        if(fs.existsSync(exportPath)) {
+            return res.sendFile(exportPath);
+        } else {
+            res.status(404),
+            res.send('Could not find file ' + req.query.file);
+        }
     });
 };

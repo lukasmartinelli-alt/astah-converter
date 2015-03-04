@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="no-js" ng-app="yow">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Astah to PNG Converter</title>
+        <meta name="description" content="Convert astah files to svg or png.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/normalize/3.0.2/normalize.css">
+        <link rel="stylesheet" href="main.css">
+        <link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+        <!--[if lt IE 9]>
+        <script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header>
+            <div id="title">
+                <img src="img/transform.svg" alt="convert">
+                <h1>Astah to PNG<br />Converter</h1>
+            </div>
+        </header>
+        <div id="converter">
+            <div id="dragndropimage">
+                <h2>Drag Astah files here</h2>
+                <p>Or, if you prefer...</p>
+                <div class="uploadimage-input"><input id="upload-input" multiple="multiple" name="uploadFiles" type="file"></div>
+            </div>
+        </div>
+        <div id="exports" data-bind="foreach: exports">
+            <div class="export">
+                <a data-bind="attr: {href: url }">
+                    <img data-bind="attr: { src: url, alt: filename }">
+                </a>
+            </div>
+        </div>
+        <script src="//cdn.jsdelivr.net/knockout/3.3.0/knockout.js"></script>
+        <script data-main="js/main.js" src="//cdn.jsdelivr.net/requirejs/2.1.14/require.min.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-43668688-2', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>
