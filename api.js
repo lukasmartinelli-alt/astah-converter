@@ -1,5 +1,4 @@
 'use strict';
-var astah = require('./astah');
 var crypto = require('crypto');
 var fs = require('fs');
 var path = require('path');
@@ -15,7 +14,7 @@ function hashFile(filePath, cb) {
     fd.pipe(hash);
 };
 
-module.exports = function(app, projectDir, exportDir) {
+module.exports = function(app, astah, projectDir, exportDir) {
     app.post('/projects', function(req, res) {
         var projectFile = req.files.project;
         hashFile(projectFile.path, function(hash) {
@@ -29,7 +28,7 @@ module.exports = function(app, projectDir, exportDir) {
                     url: '/projects/' + hash,
                     exports: fs.readdirSync(path.join(exportDir, hash))
                         .filter(function(filename) {
-                            return path.extname(filename) !== '.bak'; 
+                            return path.extname(filename) !== '.bak';
                         })
                         .map(function(filename) {
                             return {

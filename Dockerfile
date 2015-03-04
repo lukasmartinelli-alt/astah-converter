@@ -13,14 +13,20 @@ RUN \
 # install astah
 RUN wget http://cdn.change-vision.com/files/astah-professional-6_9_0-b4c6e9.zip
 RUN unzip astah-professional-6_9_0-b4c6e9.zip -d /opt && rm astah-professional-6_9_0-b4c6e9.zip
-WORKDIR /opt/astah_professional
-RUN chmod +x astah-command.sh
+RUN chmod +x /opt/astah_professional/astah-command.sh
 
 # install app
-RUN mkdir -p /opt/astah-api
-WORKDIR /opt/astah-api
-COPY package.json /opt/astah-api/package.json
+RUN mkdir -p /var/astah-converter/projects && \
+    mkdir -p /var/astah-converter/exports && \
+    mkdir -p /var/astah-converter/uploads && \
+    mkdir -p /opt/astah-converter
+COPY . /opt/astah-converter
+WORKDIR /opt/astah-converter
 RUN npm install
+
+ENV ASTAH_DIR=/opt/astah_professional
+ENV PROJECT_DIR=/var/astah-converter/projects
+ENV EXPORT_DIR=/var/astah-converter/exports
+ENV UPLOAD_DIR=/var/astah-converter/uploads
 EXPOSE 3000
 CMD ["node", "server.js"]
-COPY . /opt/astah-api
