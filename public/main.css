@@ -89,6 +89,7 @@ button {
 input {
     width: 100%;
     padding: 1rem;
+    padding-top: 0rem;
     outline: 0px none transparent;
 }
 
@@ -114,6 +115,10 @@ input {
     height: 48px;
     background-image: url("../img/cloud_upload.svg");
     background-size: 100% auto;
+}
+
+#dragndropimage::hover {
+    border: 3px dashed #152B55;
 }
 
 #upload-input {

@@ -25,9 +25,14 @@
         </header>
         <div id="converter">
             <div id="dragndropimage">
-                <h2>Drag Astah files here</h2>
-                <p>Or, if you prefer...</p>
-                <div class="uploadimage-input"><input id="upload-input" multiple="multiple" name="uploadFiles" type="file"></div>
+                <div data-bind="visible: !processing()">
+                    <h2>Drag Astah files here</h2>
+                    <p>Or, if you prefer...</p>
+                    <div class="uploadimage-input"><input id="upload-input" multiple="multiple" name="uploadFiles" type="file"></div>
+                </div>
+                <div data-bind="visible: processing()">
+                    <h2>Exporting images...</h2>
+                </div>
             </div>
         </div>
         <div id="exports" data-bind="foreach: exports">

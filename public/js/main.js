@@ -1,7 +1,9 @@
 require(['html5Upload'], function (html5Upload) {
     if (html5Upload.fileApiSupported()) {
-        var context = document.getElementById('exports');
-        var exportsModel = { exports: ko.observableArray([]) };
+        var exportsModel = { 
+            processing: ko.observable(false),
+            exports: ko.observableArray([])
+        };
 
         function addExport(exportedFile) {
             var viewModel = {
@@ -17,8 +19,11 @@ require(['html5Upload'], function (html5Upload) {
             inputField: document.getElementById('upload-input'),
             key: 'project',
             onFileAdded: function(file) {
+                console.log(file);
+                exportsModel.processing(true);
                 file.on({
                     onCompleted: function(res) {
+                        exportsModel.processing(false);
                         res = JSON.parse(res);
                         console.log(res);
                         if(res.exports) {
@@ -29,6 +34,6 @@ require(['html5Upload'], function (html5Upload) {
             }
         });
 
-        ko.applyBindings(exportsModel, context);
+        ko.applyBindings(exportsModel);
     }
 });
