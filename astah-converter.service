@@ -1,0 +1,16 @@
+[Unit]
+Description=astah-converter
+After=etcd.service
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill astah-converter1
+ExecStartPre=-/usr/bin/docker rm astah-converter1
+ExecStartPre=/usr/bin/docker pull lukasmartinelli/astah-converter
+ExecStart=/usr/bin/docker run -p 80:3000 --name astah-converter1 lukasmartinelli/astah-converter
+ExecStop=/usr/bin/docker stop astah-converter1
+
+[Install]
+WantedBy=multi-user.target

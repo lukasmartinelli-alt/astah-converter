@@ -3,6 +3,8 @@
 A simple web interface and API that can export diagrams as images from
 a [Astah](http://astah.net/) project files.
 
+Try it out here: http://astah-converter.lukasmartinelli.ch/
+
 ![Astah to PNG converter web interface](screenshot.png)
 
 ## API
@@ -59,6 +61,13 @@ Now you can run the image.
 ```bash
 docker run -p 3000:3000 -it lukasmartinelli/astah-converter
 ```
+
+### Deploy on CoreOS with fleet
+
+I run the service on [CoreOS](https://coreos.com/).
+
+1. Submit service file: `fleetctl submit astah-converter.service`
+2. Start service: `fleetctl start astah-converter.service`
 
 ## Development
 
