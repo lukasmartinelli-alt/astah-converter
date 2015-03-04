@@ -1,10 +1,9 @@
 ## Astah to PNG converter
 
-A simple web interface and API that can export diagrams as images from an Astah [http://astah.net/] project file.
+A simple web interface and API that can export diagrams as images from
+a [Astah](http://astah.net/) project files.
 
-## Web
-
-![AStah to PNG converter web interface](screenshot.png)
+![Astah to PNG converter web interface](screenshot.png)
 
 ## API
 
@@ -36,4 +35,27 @@ Make a GET request to the exported file.
 
 ```
 curl -O http://localhost:3000/projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png"
+```
+
+## Deployment
+
+The Dockerfile contains [Astah](http://astah.net/faq/professional/how-to-run-astah-on-linux), Oracle JDK7 and the latest Node.
+
+I have already setup an automated build `lukasmartinelli/astah-converter`
+which you can use.
+
+```bash
+docker pull lukasmartinelli/astah-converter
+```
+
+Or you can clone the repo and build the docker image yourself.
+
+```bash
+docker build -t lukasmartinelli/astah-converter .
+```
+
+Now you can run the image.
+
+```bash
+docker run -p 3000:3000 -it lukasmartinelli/astah-converter
 ```
