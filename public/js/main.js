@@ -1,13 +1,13 @@
 require(['html5Upload'], function (html5Upload) {
     if (html5Upload.fileApiSupported()) {
-        var exportsModel = { 
+        var exportsModel = {
             processing: ko.observable(false),
             exports: ko.observableArray([])
         };
 
         function addExport(exportedFile) {
             var viewModel = {
-                url: ko.observable(exportedFile.url),
+                exportUrl: ko.observable(exportedFile.export_url),
                 filename: ko.observable(exportedFile.filename)
             };
             exportsModel.exports.push(viewModel);

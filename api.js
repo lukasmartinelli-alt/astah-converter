@@ -15,31 +15,40 @@ function hashFile(filePath, cb) {
 };
 
 module.exports = function(app, astah, projectDir, exportDir) {
-    function findFiles(hash) {
+    function findFiles(hash, absUrl) {
         return fs.readdirSync(path.join(exportDir, hash))
             .filter(function(filename) {
                 return path.extname(filename) !== '.bak';
             })
             .map(function(filename) {
                 return {
-                    url: '/projects/' + hash + '?file=' + filename,
+                    export_url: absUrl('/projects/' + hash + '?file=' + filename),
                     filename: filename
                 };
         });
     }
 
+    function makeAbsoluteUrl(req) {
+        return function(relativePath) {
+            return req.protocol + '://' + req.get('host') + relativePath;
+        };
+    }
+
     app.post('/projects', function(req, res) {
+        var absUrl = makeAbsoluteUrl(req);
         var projectFile = req.files.project;
+
         hashFile(projectFile.path, function(hash) {
             var projectPath = path.join(projectDir,
                                         hash + '.' + projectFile.extension);
+            var projectUrl = absUrl('/projects/' + hash);
             fs.renameSync(projectFile.path, projectPath);
             astah.exportImage(projectPath, exportDir, 'png').then(function() {
                 res.status(201);
-                res.location('/projects/' + hash);
+                res.location(projectUrl);
                 res.send({
-                    url: '/projects/' + hash,
-                    exports: findFiles(hash)
+                    project_url: projectUrl,
+                    exports: findFiles(hash, absUrl)
                 });
             }, function(err) {
                 res.status(500);
@@ -49,6 +58,8 @@ module.exports = function(app, astah, projectDir, exportDir) {
     });
 
     app.get('/projects/:sha', function(req, res) {
+        var absUrl = makeAbsoluteUrl(req);
+
         if(req.query.file) {
             var exportPath = path.join(exportDir, req.params.sha, req.query.file);
             if(fs.existsSync(exportPath)) {
@@ -58,10 +69,11 @@ module.exports = function(app, astah, projectDir, exportDir) {
                 res.send('Could not find file ' + req.query.file);
             }
         } else {
+            var projectUrl = absUrl('/projects/' + req.params.sha);
             res.status(200);
             res.send({
-                url: '/projects/' + req.params.sha,
-                exports: findFiles(req.params.sha)
+                project_url: projectUrl,
+                exports: findFiles(req.params.sha, absUrl)
             });
         }
     });

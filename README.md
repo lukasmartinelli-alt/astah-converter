@@ -16,16 +16,16 @@ There is a single ressource `project` for an Astah project file.
 Make a POST request to the `projects` endpoint with a file upload named `upload`.
 
 ```bash
-curl -F "upload=@UseCaseDiagram.astah" http://localhost:3000/projects
+curl -F "upload=@UseCaseDiagram.astah" http://localhost/projects
 ```
 
 ```json
 {
-    "url": "projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d",
-    "exports:" [
+    "project_url":"http://localhost/projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d",
+    "exports":[
         {
-            "url": "projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png",
-            "filename": "UseCase Diagram.png"
+            "export_url":"http://localhost/projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagramm.png",
+            "filename":"UseCase Diagramm.png"
         }
     ]
 }
@@ -36,7 +36,7 @@ curl -F "upload=@UseCaseDiagram.astah" http://localhost:3000/projects
 Make a GET request to the exported file.
 
 ```bash
-curl -O http://localhost:3000/projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png"
+curl -O http://localhost/projects/ee6a3d12a3b22305272badb76f39fe738c97eb3d?file=UseCase Diagram.png"
 ```
 
 ## Deployment
@@ -74,7 +74,7 @@ I run the service on [CoreOS](https://coreos.com/).
 For developing I recommend mounting the current directory to the installation.
 
 ```
-docker run -v $(pwd):/opt/astah-api -p 3000:3000 -it lukasmartinelli/astah-converter
+docker run -v $(pwd):/opt/astah-api -p 80:3000 -it lukasmartinelli/astah-converter
 
 ```
 
