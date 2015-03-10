@@ -72,13 +72,6 @@ Now you can run the image.
 docker run -p 3000:3000 -it lukasmartinelli/astah-converter
 ```
 
-### Deploy on CoreOS with fleet
-
-I run the service on [CoreOS](https://coreos.com/).
-
-1. Submit service file: `fleetctl submit astah-converter.service`
-2. Start service: `fleetctl start astah-converter.service`
-
 ## Development
 
 For developing I recommend mounting the current directory to the installation.
