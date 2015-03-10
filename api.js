@@ -14,7 +14,7 @@ function hashFile(filePath, cb) {
     fd.pipe(hash);
 };
 
-module.exports = function(app, astah, projectDir, exportDir) {
+module.exports = function(app, astah, s3, projectDir, exportDir) {
     function findFiles(hash, absUrl) {
         return fs.readdirSync(path.join(exportDir, hash))
             .filter(function(filename) {
@@ -34,21 +34,44 @@ module.exports = function(app, astah, projectDir, exportDir) {
         };
     }
 
+    function tryUploadS3(objName, filePath) {
+        if(s3) {
+            s3.putFile(filePath, objName, function(err, res) {
+                if(err) {
+                    console.error(err);
+                } else {
+                    res.resume();
+                }
+            });
+        }
+    }
+
     app.post('/projects', function(req, res) {
         var absUrl = makeAbsoluteUrl(req);
         var projectFile = req.files.project;
 
         hashFile(projectFile.path, function(hash) {
+            var projectUrl = absUrl('/projects/' + hash);
             var projectPath = path.join(projectDir,
                                         hash + '.' + projectFile.extension);
-            var projectUrl = absUrl('/projects/' + hash);
 
             fs.renameSync(projectFile.path, projectPath);
+            var projName = '/projects/' + hash + '.' + projectFile.extension;
+            tryUploadS3(projName, projectPath);
 
             astah.exportImage(projectPath, exportDir, 'png').then(function() {
+                var exports = findFiles(hash, absUrl);
+
+                exports.forEach(function(exportedFile) {
+                    var exportName = '/exports/' + hash +
+                                     '/' + exportedFile.filename;
+                    var exportPath = path.join(exportDir, hash, exportedFile.filename);
+                    tryUploadS3(exportName, exportPath);
+                });
+
                 res.status(201);
                 res.location(projectUrl);
-                var exports = findFiles(hash, absUrl);
+
                 return res.format({
                     text: function() {
                         res.send(exports.map(function(exportedFile) {
