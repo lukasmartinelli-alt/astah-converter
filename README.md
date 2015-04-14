@@ -1,4 +1,4 @@
-## Astah to PNG converter
+## Astah to PNG converter [![Dependency Status](https://gemnasium.com/lukasmartinelli/astah-converter.svg)](https://gemnasium.com/lukasmartinelli/astah-converter)
 
 A simple web interface and API that can export diagrams as images from
 a [Astah](http://astah.net/) project files.
