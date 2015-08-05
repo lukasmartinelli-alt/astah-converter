@@ -1,4 +1,4 @@
-FROM dockerfile/nodejs
+FROM node:0.12.2
 MAINTAINER Lukas Martinelli <me@lukasmartinelli.ch>
 
 # install oracle jdk7
