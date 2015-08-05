@@ -3,7 +3,7 @@
 A simple web interface and API that can export diagrams as images from
 a [Astah](http://astah.net/) project files.
 
-Try it out here: http://astah-converter.lukasmartinelli.ch/
+Try it out here: http://astah-converter.cf/
 
 ![Astah to PNG converter web interface](screenshot.png)
 
