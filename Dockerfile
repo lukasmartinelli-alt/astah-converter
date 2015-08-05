@@ -1,5 +1,20 @@
-FROM node:0.12.2
+FROM ubuntu:14.04
 MAINTAINER Lukas Martinelli <me@lukasmartinelli.ch>
+
+# install basic tools
+ENV DEBIAN_FRONTEND noninteractive
+RUN \
+  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get -y upgrade && \
+  apt-get install -y build-essential && \
+  apt-get install -y software-properties-common && \
+  apt-get install -y byobu curl git htop man unzip vim wget && \
+  rm -rf /var/lib/apt/lists/*
+
+# install node
+RUN curl --silent --location https://deb.nodesource.com/setup_0.12 | bash -
+RUN apt-get install --yes nodejs
 
 # install oracle jdk7
 RUN \
@@ -29,4 +44,4 @@ ENV PROJECT_DIR=/var/astah-converter/projects
 ENV EXPORT_DIR=/var/astah-converter/exports
 ENV UPLOAD_DIR=/var/astah-converter/uploads
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["nodejs", "server.js"]
