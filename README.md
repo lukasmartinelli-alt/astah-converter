@@ -1,9 +1,11 @@
-## Astah to PNG converter [![Code Climate](https://codeclimate.com/github/lukasmartinelli/astah-converter/badges/gpa.svg)](https://codeclimate.com/github/lukasmartinelli/astah-converter) [![Dependency Status](https://gemnasium.com/lukasmartinelli/astah-converter.svg)](https://gemnasium.com/lukasmartinelli/astah-converter)
+## Astah to PNG converter ![stability-deprecated](https://img.shields.io/badge/stability-deprecated-red.svg) [![Code Climate](https://codeclimate.com/github/lukasmartinelli/astah-converter/badges/gpa.svg)](https://codeclimate.com/github/lukasmartinelli/astah-converter) [![Dependency Status](https://gemnasium.com/lukasmartinelli/astah-converter.svg)](https://gemnasium.com/lukasmartinelli/astah-converter)
+
+> :warning: This repository is no longer maintained by Lukas Martinelli.
 
 A simple web interface and API that can export diagrams as images from
 a [Astah](http://astah.net/) project files.
 
-[**:globe_with_meridians: Try out the demo at astah-converter.lukasmartinelli.ch**](http://astah-converter.lukasmartinelli.ch)
+[**:globe_with_meridians: ~~Try out the demo at astah-converter.lukasmartinelli.ch~~**](http://astah-converter.lukasmartinelli.ch)
 
 ![Astah to PNG converter web interface](screenshot.png)
 
